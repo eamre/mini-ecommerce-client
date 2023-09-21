@@ -9,11 +9,12 @@ import { UiModule } from './ui/ui.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BaseComponent } from './base/base.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -22,9 +23,12 @@ import { BaseComponent } from './base/base.component';
     NgxSpinnerModule,
     AppRoutingModule,
     AdminModule,
-    UiModule
+    UiModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {provide:"baseUrl",useValue:"https://localhost:7043/api",multi : true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
