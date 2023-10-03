@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,6 +7,7 @@ import { ListProduct } from 'src/app/contracts/list_product';
 import { AlertifyService, MessagePosition, MessageType } from 'src/app/services/admin/alertify.service';
 import { ProductService } from 'src/app/services/common/models/product.service';
 
+declare var $:any
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -17,8 +18,9 @@ export class ListComponent extends BaseComponent implements OnInit {
     super(spinner);
   }
 
-  displayedColumns: string[] = ['name', 'stock', 'price', 'createDate','updatedDate'];
+  displayedColumns: string[] = ['name', 'stock', 'price', 'createDate','updatedDate','edit','delete'];
   dataSource : MatTableDataSource<ListProduct> = null;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   async getProducts(){
@@ -29,12 +31,21 @@ export class ListComponent extends BaseComponent implements OnInit {
     this.dataSource = new MatTableDataSource<ListProduct>(allProducts.products);
     this.paginator.length = allProducts.totalProducts;
     // this.dataSource.paginator = this.paginator;
+    this.paginator.color='primary'
   }
 
   async pageChanged(){
     await this.getProducts();
   }
 
+  // delete(id, event){
+  //   const img : HTMLImageElement = event.srcElement;
+  //   $(img.parentElement.parentElement).fadeOut(1000)
+  // }
+
+  edit(id:string){
+    alert(id);
+  }
   async ngOnInit() {
     await this.getProducts();
   }

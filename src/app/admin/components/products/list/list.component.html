@@ -1,3 +1,4 @@
+
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
 
@@ -24,6 +25,22 @@
     <ng-container matColumnDef="updatedDate">
       <th mat-header-cell *matHeaderCellDef>Updated Date</th>
       <td mat-cell *matCellDef="let element">{{ element.updatedDate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>Êdit</th>
+      <td mat-cell *matCellDef="let element">
+        <img src="/assets/img/edit.png" style="width: 2.2em;"
+        (click)="edit(element.id)"/>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef>Delete</th>
+      <td [id]="element.id" mat-cell *matCellDef="let element" appDelete (cb)="getProducts()">
+        <!-- <img src="/assets/img/delete.png" style="width: 2.5em;"
+        (click)="delete(element.id, $event)"/> -->
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
