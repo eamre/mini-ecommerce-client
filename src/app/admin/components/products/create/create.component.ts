@@ -7,6 +7,7 @@ import {
   MessagePosition,
   MessageType,
 } from 'src/app/services/admin/alertify.service';
+import { FileUploadOptions } from 'src/app/services/common/file-upload/file-upload.component';
 import { ProductService } from 'src/app/services/common/models/product.service';
 
 @Component({
@@ -26,6 +27,13 @@ export class CreateComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {}
 
   @Output() createdProduct: EventEmitter<CreateProduct> = new EventEmitter();
+  fileUploadOptions: Partial<FileUploadOptions>={
+    action:"upload",
+    controller:"products",
+    explanation:"resimleri seçin",
+    isAdminPage:true,
+    accept:".png, .jpg, .jpeg"
+  }
 
   create(
     name: HTMLInputElement,

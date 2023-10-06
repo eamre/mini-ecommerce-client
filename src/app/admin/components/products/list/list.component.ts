@@ -25,27 +25,28 @@ export class ListComponent extends BaseComponent implements OnInit {
 
   async getProducts(){
     this.showSpinner(SpinnerType.BallAtom);
-    let allProducts:{totalProducts:number,products:ListProduct[]}= await this.productService.read(this.paginator ? this.paginator.pageIndex : 0, this.paginator ? this.paginator.pageSize:5, ()=>this.hideSpinner(SpinnerType.BallAtom),
+    let allProducts:{totalProducts:number,products:ListProduct[]} =
+    await this.productService.read(this.paginator ? this.paginator.pageIndex : 0, this.paginator ? this.paginator.pageSize:5, ()=>this.hideSpinner(SpinnerType.BallAtom),
     (errorMessage) => this.alertifyService.message(errorMessage,{messageType:MessageType.Error,position:MessagePosition.TopRight}));
 
     this.dataSource = new MatTableDataSource<ListProduct>(allProducts.products);
     this.paginator.length = allProducts.totalProducts;
     // this.dataSource.paginator = this.paginator;
     this.paginator.color='primary'
+    if(this.paginator.pageIndex > 0 && this.dataSource.data.length === 0){
+      this.paginator.previousPage(); // Önceki sayfaya dön
+      await this.getProducts();
+    }
   }
 
   async pageChanged(){
     await this.getProducts();
   }
 
-  // delete(id, event){
-  //   const img : HTMLImageElement = event.srcElement;
-  //   $(img.parentElement.parentElement).fadeOut(1000)
-  // }
-
   edit(id:string){
     alert(id);
   }
+
   async ngOnInit() {
     await this.getProducts();
   }

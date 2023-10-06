@@ -8,15 +8,11 @@ import { AdminModule } from './admin/admin.module';
 import { UiModule } from './ui/ui.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { BaseComponent } from './base/base.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { DeleteDirective } from './directives/admin/delete.directive';
-import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -26,7 +22,7 @@ import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.com
     AppRoutingModule,
     AdminModule,
     UiModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     {provide:"baseUrl",useValue:"https://localhost:7043/api",multi : true}
