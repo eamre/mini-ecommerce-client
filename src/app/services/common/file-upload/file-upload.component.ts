@@ -1,6 +1,11 @@
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { NgxFileDropEntry } from 'ngx-file-drop';
+import {
+  FileUploadDialogComponent,
+  FileUploadDialogState,
+} from 'src/app/dialogs/file-upload-dialog/file-upload-dialog.component';
 import {
   AlertifyService,
   MessagePosition,
@@ -12,6 +17,7 @@ import {
   ToastrPosition,
 } from '../../ui/custom-toastr.service';
 import { HttpClientService } from '../http-client.service';
+import { DialogService } from '../dialog.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -22,7 +28,9 @@ export class FileUploadComponent {
   constructor(
     private httpClientService: HttpClientService,
     private alertify: AlertifyService,
-    private toastr: CustomToastrService
+    private toastr: CustomToastrService,
+    private dialog: MatDialog,
+    private dialogService:DialogService
   ) {}
 
   public files: NgxFileDropEntry[];
@@ -30,15 +38,16 @@ export class FileUploadComponent {
 
   public selectedFiles(files: NgxFileDropEntry[]) {
     this.files = files;
-    for (const droppedFile of files) {
-      // Is it a file?
-      if (droppedFile.fileEntry.isFile) {
-        const fileData: FormData = new FormData();
-        for (const file of files) {
-          (file.fileEntry as FileSystemFileEntry).file((_file: File) => {
-            fileData.append(_file.name, _file, file.relativePath);
-          });
-        }
+    const fileData: FormData = new FormData();
+    for (const file of files) {
+      (file.fileEntry as FileSystemFileEntry).file((_file: File) => {
+        fileData.append(_file.name, _file, file.relativePath);
+      });
+    }
+    this.dialogService.openDialog({
+      compontentType: FileUploadDialogComponent,
+      data: FileUploadDialogState.Yes,
+      afterClosedDelete: ()=>{
         this.httpClientService
           .post(
             {
@@ -79,14 +88,22 @@ export class FileUploadComponent {
               }
             }
           );
-      } else {
-        // It was a directory (empty directories are added, otherwise only files)
-        const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
       }
-    }
+    });
   }
+  // openDialog(afterClosedDelete: any): void {
+  //   const dialogRef = this.dialog.open(FileUploadDialogComponent, {
+  //     data: FileUploadDialogState.Yes,
+  //   });
+
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result == FileUploadDialogState.Yes) {
+  //       afterClosedDelete();
+  //     }
+  //   });
+  // }
 }
+
 
 export class FileUploadOptions {
   controller?: string;
