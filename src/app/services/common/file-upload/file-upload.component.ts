@@ -58,7 +58,7 @@ export class FileUploadComponent {
               controller: this.options.controller,
               action: this.options.action,
               queryString: this.options.queryString,
-              headers: new HttpHeaders({ responseType: 'blob' }),
+              headers: new HttpHeaders({ "responseType": 'blob' })
             },
             fileData
           )
