@@ -97,17 +97,7 @@ export class FileUploadComponent {
       }
     });
   }
-  // openDialog(afterClosedDelete: any): void {
-  //   const dialogRef = this.dialog.open(FileUploadDialogComponent, {
-  //     data: FileUploadDialogState.Yes,
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result == FileUploadDialogState.Yes) {
-  //       afterClosedDelete();
-  //     }
-  //   });
-  // }
+  
 }
 
 

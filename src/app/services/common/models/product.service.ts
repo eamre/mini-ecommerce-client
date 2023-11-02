@@ -30,7 +30,7 @@ export class ProductService {
   async read(page:number=0, size:number=5, successCallBack?:()=>void, errorCallBack?:(errorMessage:string)=>void):Promise<{totalProducts:number,products:ListProduct[]}>{
     const promiseData: Promise<{totalProducts:number,products:ListProduct[]}> = this.httpClientService.get<{totalProducts:number,products:ListProduct[]}>({
       controller:"products",
-      queryString:`page=${page}&size=${size}`
+      queryString:`Pagination.page=${page}&Pagination.size=${size}`
     }).toPromise();
 
     promiseData.then(successCallBack)
