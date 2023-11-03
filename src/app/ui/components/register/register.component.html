@@ -1,1 +1,50 @@
-<p>register works!</p>
+<div class="d-flex align-items-center justify-content-center" style="height: 80vh;">
+  <form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)" style="width: 25%;">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name Surname</label>
+      <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="{'is-invalid':submitted && component?.name.errors}">
+      <span class="text-danger"
+      *ngIf="(component?.name.touched || submitted) && (component?.name.errors?.required)">
+        Name is required
+      </span>
+      <span class="text-danger"
+      *ngIf="(component?.name.touched || submitted) && (component?.name.errors?.minlength || component?.name.errors?.maxlength)">
+        Min 3 - Max 50 Char
+      </span>
+    </div>
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" formControlName="username"[ngClass]="{'is-invalid':submitted && component?.username.errors}">
+      <span class="text-danger"
+      *ngIf="(component?.username.touched || submitted) && (component?.username.errors?.required)">
+      Username is required
+      </span>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" formControlName="email"[ngClass]="{'is-invalid':submitted && component?.email.errors}" >
+      <span class="text-danger"
+      *ngIf="(component?.email.touched || submitted) && (component?.email.errors?.required)">
+      Email is required
+      </span>
+      <span class="text-danger"
+      *ngIf="(component?.email.touched || submitted) && (component?.email.errors?.email)">
+      Email formatına uygun giriniz.
+      </span>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" formControlName="password" [ngClass]="{'is-invalid':submitted && component?.password.errors}">
+      <span class="text-danger"
+      *ngIf="(component?.password.touched || submitted) && (component?.password.errors?.required)">
+      Şifrenizi Giriniz
+      </span>
+    </div>
+    <div class="mb-3">
+      <label for="passwordAgain" class="form-label">Password Again</label>
+      <input type="password" class="form-control" id="passwordAgain" formControlName="passwordAgain" [ngClass]="{'is-invalid':submitted && component?.passwordAgain.errors}">
+      <span class="text-danger" *ngIf="!passwordsMatch">Passwords do not match</span>
+    </div>
+    <button type="submit" class="btn btn-primary d-flex mx-auto px-4">Submit</button>
+  </form>
+</div>
