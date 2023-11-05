@@ -37,13 +37,15 @@
       <input type="password" class="form-control" id="password" formControlName="password" [ngClass]="{'is-invalid':submitted && component?.password.errors}">
       <span class="text-danger"
       *ngIf="(component?.password.touched || submitted) && (component?.password.errors?.required)">
-      Şifrenizi Giriniz
+        Şifrenizi Giriniz
       </span>
     </div>
     <div class="mb-3">
       <label for="passwordAgain" class="form-label">Password Again</label>
       <input type="password" class="form-control" id="passwordAgain" formControlName="passwordAgain" [ngClass]="{'is-invalid':submitted && component?.passwordAgain.errors}">
-      <span class="text-danger" *ngIf="!passwordsMatch">Passwords do not match</span>
+      <span class="text-danger" *ngIf="(component?.password.touched || submitted) && frm.hasError('notSame')">
+        Şifreler Aynı Değil
+      </span>
     </div>
     <button type="submit" class="btn btn-primary d-flex mx-auto px-4">Submit</button>
   </form>
