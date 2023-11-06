@@ -1,0 +1,16 @@
+<div class="d-flex flex-column align-items-center justify-content-center mx-auto" style="height: 80vh; width: 25%;">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username or Email</label>
+      <input #txtUsernameOrEmail type="text" class="form-control" id="username">
+      <span class="text-danger">
+      </span>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input #txtPassword type="password" class="form-control" id="password" >
+      <span class="text-danger">
+      </span>
+    </div>
+    <button type="submit" class="btn btn-primary d-flex mx-auto px-4"
+    (click)="login(txtUsernameOrEmail.value, txtPassword.value)">Log in</button>
+</div>

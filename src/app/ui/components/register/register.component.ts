@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { BaseComponent } from 'src/app/base/base.component';
 import { CreateUserResponse } from 'src/app/contracts/users/create_user';
 import { User } from 'src/app/entities/user';
 import { UserService } from 'src/app/services/common/models/user.service';
@@ -10,13 +12,16 @@ import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent extends BaseComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
     private userService:UserService,
-    private toastService: CustomToastrService
-    ) { }
+    private toastService: CustomToastrService,
+    spinner: NgxSpinnerService
+    ) {
+    super(spinner);
+  }
 
   frm: FormGroup;
   submitted: boolean = false;
@@ -46,7 +51,7 @@ export class RegisterComponent implements OnInit {
     if(this.frm.invalid)
       return;
 
-      let result : CreateUserResponse = await this.userService.create(user);
+    let result : CreateUserResponse = await this.userService.create(user);
 
     if(result.success) {
       this.toastService.message(result.message, "Kullanıcı kaydı başarılı",{

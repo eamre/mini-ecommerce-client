@@ -13,11 +13,21 @@ export class UserService {
   }
 
   async create(user:User):Promise<CreateUserResponse>{
-    const userObservable: Observable<CreateUserResponse | User> = this.httpClientService.post<CreateUserResponse | User>({
+    const createUserObservable: Observable<CreateUserResponse | User> = this.httpClientService.post<CreateUserResponse | User>({
       controller:"Users",
     },user);
 
-    return await firstValueFrom(userObservable) as CreateUserResponse;
+    return await firstValueFrom(createUserObservable) as CreateUserResponse;
+  }
+
+  async login(usernameOrEmail: string, password:string, cb?:()=>void):Promise<void>{
+    const loginUserObservable:Observable<any> = this.httpClientService.post({
+      controller:"users",
+      action:"login"
+    },{usernameOrEmail,password})
+
+    return await firstValueFrom(loginUserObservable)
+    cb();
   }
 
 }
