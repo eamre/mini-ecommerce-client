@@ -32,15 +32,15 @@ export class UserService {
 
     const tokenReponse: TokenResponse = await firstValueFrom(loginUserObservable) as TokenResponse;
 
-    cb();
     if(tokenReponse){
       localStorage.setItem("accessToken",tokenReponse.token.accessToken);
-
+      
       this.toastrService.message("Kullanıcı girişi başariyla sağlandi","Giriş başarili",{
         messageType:ToastrMessageType.Success,
         position:ToastrPosition.TopRight
       })
     }
+    cb();
   }
 
 }

@@ -4,6 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { SpinnerType } from 'src/app/base/base.component';
+import { AuthService, _isAuthenticated } from 'src/app/services/common/auth.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/ui/custom-toastr.service';
 
 @Injectable({
@@ -20,16 +21,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     this.spinner.show(SpinnerType.BallAtom)
-    let token: string = localStorage.getItem("accessToken");
-    let expired: boolean;
-    try {
-      expired = this.jwtHelper.isTokenExpired(token)
-      let decode = this.jwtHelper.decodeToken(token)
-    } catch (error) {
-      expired = true
-    }
 
-    if (!token || expired) {
+    if (!_isAuthenticated) {
       this.toastrService.message("Oturum açmanız gerekiyor","Yetkisiz Erişim",{
         messageType: ToastrMessageType.Warning,
         position:ToastrPosition.TopRight
@@ -43,3 +36,12 @@ export class AuthGuard implements CanActivate {
   }
 
 }
+
+    // let token: string = localStorage.getItem("accessToken");
+    // let expired: boolean;
+    // try {
+    //   expired = this.jwtHelper.isTokenExpired(token)
+    //   let decode = this.jwtHelper.decodeToken(token)
+    // } catch (error) {
+    //   expired = true
+    // }

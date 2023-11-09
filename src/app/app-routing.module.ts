@@ -6,7 +6,7 @@ import { HomeComponent } from './ui/components/home/home.component';
 import { AuthGuard } from './guards/common/auth.guard';
 
 const routes: Routes = [
-  {path:"admin", component:LayoutComponent,canActivate: [AuthGuard],children:[
+  {path:"admin", component:LayoutComponent,children:[
     {path: "", component: DashboardComponent, canActivate:[AuthGuard]},
     {path: "customers",
     loadChildren: () => import("./admin/components/customer/customer.module")
@@ -17,7 +17,7 @@ const routes: Routes = [
     {path: "orders",
     loadChildren: () => import("./admin/components/order/order.module")
     .then(module => module.OrderModule),canActivate:[AuthGuard]}
-  ]},
+  ],canActivate: [AuthGuard]},
 
   {path: "",component:HomeComponent},
   {path: "basket",
