@@ -6,6 +6,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { Token } from 'src/app/contracts/token/token';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../../ui/custom-toastr.service';
 import { TokenResponse } from 'src/app/contracts/token/tokenResponse';
+import { SocialUser } from '@abacritt/angularx-social-login';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class UserService {
 
     if(tokenReponse){
       localStorage.setItem("accessToken",tokenReponse.token.accessToken);
-      
+
       this.toastrService.message("Kullanıcı girişi başariyla sağlandi","Giriş başarili",{
         messageType:ToastrMessageType.Success,
         position:ToastrPosition.TopRight
@@ -43,4 +44,20 @@ export class UserService {
     cb();
   }
 
+  async googleLogin(user:SocialUser, cb?:() => void):Promise<any>{
+    const googleLoginObservable: Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
+      controller:"users",
+      action:"GoogleLogin"
+    }, user);
+
+    const tokenReponse: TokenResponse = await firstValueFrom(googleLoginObservable) as TokenResponse;
+    if (tokenReponse) {
+      localStorage.setItem("accessToken", tokenReponse.token.accessToken);
+      this.toastrService.message("Google Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
+        messageType:ToastrMessageType.Success,
+        position:ToastrPosition.TopRight
+      })
+    }
+    cb()
+  }
 }
