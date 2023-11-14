@@ -1,4 +1,4 @@
-import { GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,18 +33,20 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.authStateSubscription = this.socialAuthService.authState.subscribe(
       async (user: SocialUser) => {
         if (user) {
-          console.log('user');
+          console.log(user);
           this.showSpinner(SpinnerType.BallAtom);
-          await this.userService.googleLogin(user, () => {
-            this.hideSpinner(SpinnerType.BallAtom);
-            this.authService.identityCheck();
-            this.activatedRoute.queryParams.subscribe((params) => {
-              const returnUrl: string = params['return'];
-              if (returnUrl) {
-                this.router.navigate([returnUrl]);
-              }
-            });
-          });
+          switch (user.provider) {
+            case 'GOOGLE':
+              await this.userService.googleLogin(user, () => {
+                this.loginCallBack();
+              });
+              break;
+            case 'FACEBOOK':
+              await this.userService.facebookLogin(user, () => {
+                this.loginCallBack();
+              });
+              break;
+          }
         }
       }
     );
@@ -68,8 +70,18 @@ export class LoginComponent extends BaseComponent implements OnInit {
     });
   }
 
-  async googleLogin() {
-    console.log("ah");
+  facebookLogin(){
+    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID)
+  }
 
+  loginCallBack(){
+    this.authService.identityCheck();
+    this.hideSpinner(SpinnerType.BallAtom);
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const returnUrl: string = params['return'];
+      if (returnUrl) {
+        this.router.navigate([returnUrl]);
+      }
+    });
   }
 }

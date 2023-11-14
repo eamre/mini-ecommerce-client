@@ -49,7 +49,6 @@ export class UserService {
       controller:"users",
       action:"GoogleLogin"
     }, user);
-
     const tokenReponse: TokenResponse = await firstValueFrom(googleLoginObservable) as TokenResponse;
     if (tokenReponse) {
       localStorage.setItem("accessToken", tokenReponse.token.accessToken);
@@ -59,5 +58,22 @@ export class UserService {
       })
     }
     cb()
+  }
+
+  async facebookLogin(user: SocialUser, cb?:()=> void):Promise<any>{
+    const facebookLoginObservable:Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
+      controller:"users",
+      action:"facebooklogin"
+    },user);
+
+    const tokenReponse: TokenResponse = await firstValueFrom(facebookLoginObservable) as TokenResponse
+    if(tokenReponse){
+      localStorage.setItem("accessToken",tokenReponse.token.accessToken);
+      this.toastrService.message("Facebook Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
+        messageType:ToastrMessageType.Success,
+        position:ToastrPosition.TopRight
+      });
+    }
+    cb();
   }
 }
