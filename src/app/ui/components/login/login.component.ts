@@ -8,6 +8,7 @@ import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { TokenResponse } from 'src/app/contracts/token/tokenResponse';
 import { AuthService } from 'src/app/services/common/auth.service';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
+import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
 import { UserService } from 'src/app/services/common/models/user.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   private authStateSubscription: Subscription;
 
   constructor(
-    private userService: UserService,
+    private userAuthService: UserAuthService,
     spinner: NgxSpinnerService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
@@ -37,12 +38,12 @@ export class LoginComponent extends BaseComponent implements OnInit {
           this.showSpinner(SpinnerType.BallAtom);
           switch (user.provider) {
             case 'GOOGLE':
-              await this.userService.googleLogin(user, () => {
+              await this.userAuthService.googleLogin(user, () => {
                 this.loginCallBack();
               });
               break;
             case 'FACEBOOK':
-              await this.userService.facebookLogin(user, () => {
+              await this.userAuthService.facebookLogin(user, () => {
                 this.loginCallBack();
               });
               break;
@@ -58,15 +59,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   async login(usernameOrEmail: string, password: string) {
     this.showSpinner(SpinnerType.BallAtom);
-    await this.userService.login(usernameOrEmail, password, () => {
-      this.authService.identityCheck();
-      this.activatedRoute.queryParams.subscribe((params) => {
-        const returnUrl: string = params['return'];
-        if (returnUrl) {
-          this.router.navigate([returnUrl]);
-        }
-      });
-      this.hideSpinner(SpinnerType.BallAtom);
+    await this.userAuthService.login(usernameOrEmail, password, () => {
+      this.loginCallBack();
     });
   }
 

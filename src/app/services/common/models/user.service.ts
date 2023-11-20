@@ -25,55 +25,54 @@ export class UserService {
     return await firstValueFrom(createUserObservable) as CreateUserResponse;
   }
 
-  async login(usernameOrEmail: string, password:string, cb?:()=>void):Promise<any>{
-    const loginUserObservable:Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({
-      controller:"users",
-      action:"login"
-    },{usernameOrEmail,password})
+  // async login(usernameOrEmail: string, password:string, cb?:()=>void):Promise<any>{
+  //   const loginUserObservable:Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({
+  //     controller:"users",
+  //     action:"login"
+  //   },{usernameOrEmail,password})
 
-    const tokenReponse: TokenResponse = await firstValueFrom(loginUserObservable) as TokenResponse;
+  //   const tokenReponse: TokenResponse = await firstValueFrom(loginUserObservable) as TokenResponse;
 
-    if(tokenReponse){
-      localStorage.setItem("accessToken",tokenReponse.token.accessToken);
+  //   if(tokenReponse){
+  //     localStorage.setItem("accessToken",tokenReponse.token.accessToken);
+  //     this.toastrService.message("Kullanıcı girişi başariyla sağlandi","Giriş başarili",{
+  //       messageType:ToastrMessageType.Success,
+  //       position:ToastrPosition.TopRight
+  //     })
+  //   }
+  //   cb();
+  // }
 
-      this.toastrService.message("Kullanıcı girişi başariyla sağlandi","Giriş başarili",{
-        messageType:ToastrMessageType.Success,
-        position:ToastrPosition.TopRight
-      })
-    }
-    cb();
-  }
+  // async googleLogin(user:SocialUser, cb?:() => void):Promise<any>{
+  //   const googleLoginObservable: Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
+  //     controller:"users",
+  //     action:"GoogleLogin"
+  //   }, user);
+  //   const tokenReponse: TokenResponse = await firstValueFrom(googleLoginObservable) as TokenResponse;
+  //   if (tokenReponse) {
+  //     localStorage.setItem("accessToken", tokenReponse.token.accessToken);
+  //     this.toastrService.message("Google Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
+  //       messageType:ToastrMessageType.Success,
+  //       position:ToastrPosition.TopRight
+  //     })
+  //   }
+  //   cb()
+  // }
 
-  async googleLogin(user:SocialUser, cb?:() => void):Promise<any>{
-    const googleLoginObservable: Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
-      controller:"users",
-      action:"GoogleLogin"
-    }, user);
-    const tokenReponse: TokenResponse = await firstValueFrom(googleLoginObservable) as TokenResponse;
-    if (tokenReponse) {
-      localStorage.setItem("accessToken", tokenReponse.token.accessToken);
-      this.toastrService.message("Google Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
-        messageType:ToastrMessageType.Success,
-        position:ToastrPosition.TopRight
-      })
-    }
-    cb()
-  }
+  // async facebookLogin(user: SocialUser, cb?:()=> void):Promise<any>{
+  //   const facebookLoginObservable:Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
+  //     controller:"users",
+  //     action:"facebooklogin"
+  //   },user);
 
-  async facebookLogin(user: SocialUser, cb?:()=> void):Promise<any>{
-    const facebookLoginObservable:Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
-      controller:"users",
-      action:"facebooklogin"
-    },user);
-
-    const tokenReponse: TokenResponse = await firstValueFrom(facebookLoginObservable) as TokenResponse
-    if(tokenReponse){
-      localStorage.setItem("accessToken",tokenReponse.token.accessToken);
-      this.toastrService.message("Facebook Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
-        messageType:ToastrMessageType.Success,
-        position:ToastrPosition.TopRight
-      });
-    }
-    cb();
-  }
+  //   const tokenReponse: TokenResponse = await firstValueFrom(facebookLoginObservable) as TokenResponse
+  //   if(tokenReponse){
+  //     localStorage.setItem("accessToken",tokenReponse.token.accessToken);
+  //     this.toastrService.message("Facebook Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
+  //       messageType:ToastrMessageType.Success,
+  //       position:ToastrPosition.TopRight
+  //     });
+  //   }
+  //   cb();
+  // }
 }
