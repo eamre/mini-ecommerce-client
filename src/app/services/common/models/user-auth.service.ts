@@ -13,15 +13,28 @@ export class UserAuthService {
   constructor(private httpClientService: HttpClientService,
     private toastrService : CustomToastrService) { }
 
+  async refreshTokenLogin(refreshToken:string, cb?:()=>void):Promise<any>{
+    const observable: Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({
+      action:"RefreshTokenLogin",
+      controller:"auth"
+    },{refreshToken})
+    const tokenReponse: TokenResponse = await firstValueFrom(observable) as TokenResponse;
+    if(tokenReponse){
+      localStorage.setItem("accessToken",tokenReponse.token.accessToken);
+      localStorage.setItem("refreshToken",tokenReponse.token.refreshToken);
+    }
+    cb();
+  }
+
   async login(usernameOrEmail: string, password:string, cb?:()=>void):Promise<any>{
     const loginUserObservable:Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({
       controller:"auth",
       action:"login"
     },{usernameOrEmail,password})
     const tokenReponse: TokenResponse = await firstValueFrom(loginUserObservable) as TokenResponse;
-
     if(tokenReponse){
       localStorage.setItem("accessToken",tokenReponse.token.accessToken);
+      localStorage.setItem("refreshToken",tokenReponse.token.refreshToken);
       this.toastrService.message("Kullanıcı girişi başariyla sağlandi","Giriş başarili",{
         messageType:ToastrMessageType.Success,
         position:ToastrPosition.TopRight
@@ -38,6 +51,7 @@ export class UserAuthService {
     const tokenReponse: TokenResponse = await firstValueFrom(googleLoginObservable) as TokenResponse;
     if (tokenReponse) {
       localStorage.setItem("accessToken", tokenReponse.token.accessToken);
+      localStorage.setItem("refreshToken",tokenReponse.token.refreshToken);
       this.toastrService.message("Google Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
         messageType:ToastrMessageType.Success,
         position:ToastrPosition.TopRight
@@ -54,6 +68,7 @@ export class UserAuthService {
     const tokenReponse: TokenResponse = await firstValueFrom(facebookLoginObservable) as TokenResponse
     if(tokenReponse){
       localStorage.setItem("accessToken",tokenReponse.token.accessToken);
+      localStorage.setItem("refreshToken",tokenReponse.token.refreshToken);
       this.toastrService.message("Facebook Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
         messageType:ToastrMessageType.Success,
         position:ToastrPosition.TopRight
