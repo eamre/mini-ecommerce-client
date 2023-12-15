@@ -13,17 +13,21 @@ export class UserAuthService {
   constructor(private httpClientService: HttpClientService,
     private toastrService : CustomToastrService) { }
 
-  async refreshTokenLogin(refreshToken:string, cb?:()=>void):Promise<any>{
+  async refreshTokenLogin(refreshToken:string, cb?:(state)=>void):Promise<any>{
     const observable: Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({
       action:"RefreshTokenLogin",
       controller:"auth"
     },{refreshToken})
-    const tokenReponse: TokenResponse = await firstValueFrom(observable) as TokenResponse;
-    if(tokenReponse){
-      localStorage.setItem("accessToken",tokenReponse.token.accessToken);
-      localStorage.setItem("refreshToken",tokenReponse.token.refreshToken);
+    try {
+      const tokenReponse: TokenResponse = await firstValueFrom(observable) as TokenResponse;
+      if(tokenReponse){
+        localStorage.setItem("accessToken",tokenReponse.token.accessToken);
+        localStorage.setItem("refreshToken",tokenReponse.token.refreshToken);
+      }
+      cb(tokenReponse ? true:false);
+    } catch (error) {
+      cb(false);
     }
-    cb();
   }
 
   async login(usernameOrEmail: string, password:string, cb?:()=>void):Promise<any>{

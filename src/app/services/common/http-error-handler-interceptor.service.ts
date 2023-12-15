@@ -4,6 +4,9 @@ import { error } from 'console';
 import { Observable, catchError, of } from 'rxjs';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../ui/custom-toastr.service';
 import { UserAuthService } from './models/user-auth.service';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SpinnerType } from 'src/app/base/base.component';
 
 @Injectable({
   providedIn: 'root'
@@ -11,21 +14,30 @@ import { UserAuthService } from './models/user-auth.service';
 export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
 
   constructor(private toastrService: CustomToastrService,
-    private userAuthService: UserAuthService) { }
+    private userAuthService: UserAuthService,
+    private router: Router,
+    private spinner:NgxSpinnerService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(catchError(error => {
       switch (error.status) {
         case HttpStatusCode.Unauthorized:
-          this.toastrService.message("Bu işlemi yapmaya yetkiniz yok", "Yetkisiz İşlem",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
-          this.userAuthService.refreshTokenLogin(localStorage.getItem("refreshToken")).then(data => {
-          });
+          this.userAuthService.refreshTokenLogin(localStorage.getItem("refreshToken"),(state)=>{
+            if(!state){
+              let url = this.router.url; //"/product"
+              if(url == "/products")
+                this.toastrService.message("Sepete Ürün Eklemek için Oturum Açın","Oturun Aç Bea",{messageType:ToastrMessageType.Warning,position:ToastrPosition.TopRight})
+              else
+                this.toastrService.message("Bu işlemi yapmaya yetkiniz yok", "Yetkisiz İşlem",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
+            }
+          }).then(data => {});
           break;
         case HttpStatusCode.InternalServerError:
           this.toastrService.message("Sunucuya Erişilemiyor", "Sunucu Hatası",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
           break;
         case HttpStatusCode.BadRequest:
-          this.toastrService.message("Geçersiz İstek Yapıldı", "Geçersiz İstek",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
+          if(localStorage.getItem("refreshToken"))
+            this.toastrService.message("Geçersiz İstek Yapıldı", "Geçersiz İstek",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
           break;
         case HttpStatusCode.NotFound:
           this.toastrService.message("Maalesef Bulunamadı", "Yok Yani",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
@@ -37,7 +49,7 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
           this.toastrService.message("Beklenmeyen Bir Hata Meydana Geldi", "Hata",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
           break;
       }
-      console.log(error);
+      this.spinner.hide(SpinnerType.BallAtom)
       return of(error);
     }));
   }

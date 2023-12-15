@@ -14,9 +14,9 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink="products">Products</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink="basket">Basket</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink="register" *ngIf="!authService.isAuthenticated">Register</a>
         </li>
@@ -46,10 +46,13 @@
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li> -->
       </ul>
-      <form class="d-flex" role="search">
+      <!-- <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
         <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      </form> -->
+      <div class="d-flex">
+        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Sepet</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -60,3 +63,5 @@
 <ngx-spinner type="ball-atom" name="s1"></ngx-spinner>
 <ngx-spinner type="ball-scale-multiple" name="s2"></ngx-spinner>
 <ngx-spinner type="ball-spin-clockwise-fade-rotating" name="s3"></ngx-spinner>
+
+<app-baskets></app-baskets>
