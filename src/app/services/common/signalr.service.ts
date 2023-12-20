@@ -9,38 +9,34 @@ export class SignalRService {
   constructor(@Inject("baseSignalRUrl")private baseSignalRUrl:string){
   }
 
-  private _connection: HubConnection;
-  get connection():HubConnection{
-    return this._connection;
-  }
-
-  start(hubUrl: string){
+  start(hubUrl: string) {
     hubUrl = this.baseSignalRUrl + hubUrl;
 
-    if (!this._connection || this._connection?.state == HubConnectionState.Disconnected) {
-      this._connection = new HubConnectionBuilder()
-        .withUrl(hubUrl)
-        .withAutomaticReconnect()
-        .build();
+    let connection = new HubConnectionBuilder()
+      .withUrl(hubUrl)
+      .withAutomaticReconnect()
+      .build();
 
-      this._connection.start()
-        .then(() =>
-          console.log('SignalR bağlantısı başarıyla başlatıldı.'))
-        .catch((err) => setTimeout(() => this.start(hubUrl), 2000));
-    }
-      this._connection?.onreconnected((connectionId: string) => console.log("Reconnected"));
-      this._connection?.onreconnecting(err => console.log("Reconnecting"));
-      this._connection?.onclose(err => console.log("Close reconnection"));
+    connection.start()
+      .then(() =>
+        console.log('SignalR bağlantısı başarıyla başlatıldı.'))
+      .catch((err) => setTimeout(() => this.start(hubUrl), 2000));
+
+    connection?.onreconnected((connectionId: string) => console.log("Reconnected"));
+    connection?.onreconnecting(err => console.log("Reconnecting"));
+    connection?.onclose(err => console.log("Close reconnection"));
+
+    return connection
   }
 
-  invoke(methodName: string, message:any,
+  invoke(hubUrl: string, methodName: string, message:any,
     successCallBack?:(value)=> void, errorCallBack?:(error)=>void){
-      this._connection.invoke(methodName, message)
+      this.start(hubUrl).invoke(methodName, message)
         .then(successCallBack)
         .catch(errorCallBack)
   }
 
-  on(methodName: string, cb:(...message: any[]) => void){
-    this._connection?.on(methodName, cb)
+  on(hubUrl: string, methodName: string, cb:(...message: any[]) => void){
+    this.start(hubUrl).on(methodName, cb)
   }
 }
