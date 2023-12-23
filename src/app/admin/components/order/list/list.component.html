@@ -22,6 +22,14 @@
       <td mat-cell *matCellDef="let element">{{ element.createDate }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="viewDetails">
+      <th mat-header-cell *matHeaderCellDef>viewDetails</th>
+      <td mat-cell *matCellDef="let element">
+        <img src="/assets/img/detail.png" style="width: 2.2em; cursor:pointer; margin-left:1em"
+        (click)="showDetail(element.id)"/>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef>Delete</th>
       <td mat-cell *matCellDef="let element"

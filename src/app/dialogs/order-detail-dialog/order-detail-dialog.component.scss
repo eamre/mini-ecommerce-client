@@ -1,0 +1,30 @@
+.order-detail-table {
+  width: 100%;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
+
+.order-detail-row-is-clicked {
+  font-weight: bold;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.totalPrice{
+  flex: 0 0 15% !important;
+  width: 28% !important;
+}
+.order-detail-table
+{
+  margin-top: 1em;
+}
