@@ -81,4 +81,24 @@ export class UserAuthService {
     cb();
   }
 
+  async passwordReset(email:string, cb?:()=>void){
+    const observable:Observable<any>=this.httpClientService.post({
+      controller:"auth",
+      action:"PasswordReset"
+    },{email})
+
+    await firstValueFrom(observable)
+    cb()
+  }
+
+  async verifyResetToken(resetToken: string, userId: string, cb?: ()=> void):Promise<boolean>{
+    const observable:Observable<any>=this.httpClientService.post({
+      controller:"auth",
+      action:"VerifyResetToken"
+    },{resetToken, userId})
+
+    const state:boolean = await firstValueFrom(observable)
+    cb()
+    return state;
+  }
 }

@@ -16,5 +16,7 @@
       <img src="/assets/img/facebook_icon.png" style="width: 2.2em; cursor:pointer" (click)="facebookLogin()"/>
     </div>
     <button type="submit" class="btn btn-primary d-flex mx-auto px-4"
-    (click)="login(txtUsernameOrEmail.value, txtPassword.value)">Log in</button>
+      (click)="login(txtUsernameOrEmail.value, txtPassword.value)">Log in</button>
+    <a class="btn btn-light d-flex mx-auto px-4 my-2" routerLink="/password-reset">
+      Forget Password</a>
 </div>

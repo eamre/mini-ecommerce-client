@@ -7,6 +7,7 @@ import { Token } from 'src/app/contracts/token/token';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../../ui/custom-toastr.service';
 import { TokenResponse } from 'src/app/contracts/token/tokenResponse';
 import { SocialUser } from '@abacritt/angularx-social-login';
+import { error } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -25,39 +26,18 @@ export class UserService {
     return await firstValueFrom(createUserObservable) as CreateUserResponse;
   }
 
-  // async login(usernameOrEmail: string, password:string, cb?:()=>void):Promise<any>{
-  //   const loginUserObservable:Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({
-  //     controller:"users",
-  //     action:"login"
-  //   },{usernameOrEmail,password})
+  async updatePassword(userId:string, resetToken:string, password:string, passwordConfirm:string, successCb?:()=> void, errorCb?:(error)=>void){
+    const observable:Observable<any> = this.httpClientService.post({
+      action:"UpdatePassword",
+      controller:"users"
+    },{userId, resetToken, password, passwordConfirm})
 
-  //   const tokenReponse: TokenResponse = await firstValueFrom(loginUserObservable) as TokenResponse;
+    const promiseData:Promise<any> = firstValueFrom(observable)
+    promiseData.then(value => successCb()).catch(error => errorCb(error))
+    await promiseData
+  }
 
-  //   if(tokenReponse){
-  //     localStorage.setItem("accessToken",tokenReponse.token.accessToken);
-  //     this.toastrService.message("Kullanıcı girişi başariyla sağlandi","Giriş başarili",{
-  //       messageType:ToastrMessageType.Success,
-  //       position:ToastrPosition.TopRight
-  //     })
-  //   }
-  //   cb();
-  // }
 
-  // async googleLogin(user:SocialUser, cb?:() => void):Promise<any>{
-  //   const googleLoginObservable: Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
-  //     controller:"users",
-  //     action:"GoogleLogin"
-  //   }, user);
-  //   const tokenReponse: TokenResponse = await firstValueFrom(googleLoginObservable) as TokenResponse;
-  //   if (tokenReponse) {
-  //     localStorage.setItem("accessToken", tokenReponse.token.accessToken);
-  //     this.toastrService.message("Google Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
-  //       messageType:ToastrMessageType.Success,
-  //       position:ToastrPosition.TopRight
-  //     })
-  //   }
-  //   cb()
-  // }
 
   // async facebookLogin(user: SocialUser, cb?:()=> void):Promise<any>{
   //   const facebookLoginObservable:Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
