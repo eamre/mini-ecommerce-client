@@ -32,9 +32,9 @@ export class UpdatePasswordComponent extends BaseComponent implements OnInit {
         const resetToken: string = params["resetToken"];
         this.state = await this.userAuthService.verifyResetToken(resetToken,userId,()=>{
           this.hideSpinner(SpinnerType.BallAtom)
-        })
+        });
       }
-    })
+    });
   }
 
   updatePassword(password: string, passwordConfirm: string) {

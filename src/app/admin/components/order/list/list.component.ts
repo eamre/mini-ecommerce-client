@@ -31,7 +31,7 @@ export class ListComponent extends BaseComponent implements OnInit {
     await this.getOrders();
   }
 
-  displayedColumns: string[] = ['orderCode', 'userName', 'totalPrice', 'createDate','viewDetails','delete'];
+  displayedColumns: string[] = ['orderCode', 'userName', 'totalPrice', 'createDate','viewDetails','delete','completed'];
   dataSource : MatTableDataSource<ListOrder> = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -65,6 +65,7 @@ export class ListComponent extends BaseComponent implements OnInit {
         width: "750px"
       }
     })
+    debugger
   }
 
 

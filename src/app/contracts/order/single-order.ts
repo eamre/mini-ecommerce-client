@@ -5,4 +5,6 @@ export class SingleOrder{
   orderCode:string;
   description:string;
   createDate:Date;
+  completed:boolean;
+
 }
