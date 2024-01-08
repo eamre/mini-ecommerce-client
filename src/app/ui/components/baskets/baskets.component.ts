@@ -54,7 +54,7 @@ export class BasketsComponent extends BaseComponent implements OnInit {
     this.dialogService.openDialog({
       compontentType:BasketItemRemoveDialogComponent,
       data:BasketItemDeleteState.Yes,
-      afterClosedDelete: async () => {
+      afterClosedDialog: async () => {
         this.showSpinner(SpinnerType.BallAtom)
         await this.basketService.remove(basketItemId);
         $("."+basketItemId).fadeOut(200,()=> this.hideSpinner(SpinnerType.BallAtom))
@@ -66,7 +66,7 @@ export class BasketsComponent extends BaseComponent implements OnInit {
     this.dialogService.openDialog({
       compontentType:ShoppingCompleteDialogComponent,
       data:ShoppingCompleteState.Yes,
-      afterClosedDelete:async ()=>{
+      afterClosedDialog:async ()=>{
         this.showSpinner(SpinnerType.BallAtom)
         const order: CreateOrder = new CreateOrder();
         order.address ="Bursa"

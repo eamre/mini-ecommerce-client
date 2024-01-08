@@ -50,7 +50,7 @@ export class FileUploadComponent {
     this.dialogService.openDialog({
       compontentType: FileUploadDialogComponent,
       data: FileUploadDialogState.Yes,
-      afterClosedDelete: ()=>{
+      afterClosedDialog: ()=>{
         this.spinner.show(SpinnerType.BallAtom)
         this.httpClientService
           .post(
@@ -97,7 +97,7 @@ export class FileUploadComponent {
       }
     });
   }
-  
+
 }
 
 

@@ -43,7 +43,7 @@ export class OrderDetailDialogComponent extends BaseDialog<OrderDetailDialogComp
     this.dialogService.openDialog({
       compontentType:CompleteOrderDialogComponent,
       data: CompleteOrderDialogState.Yes,
-      afterClosedDelete: async ()=>{
+      afterClosedDialog: async ()=>{
         this.spinner.show(SpinnerType.BallAtom)
         await this.orderService.completeOrder(this.data as string)
         this.spinner.hide(SpinnerType.BallAtom)

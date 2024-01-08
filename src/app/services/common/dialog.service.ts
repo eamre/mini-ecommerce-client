@@ -19,8 +19,7 @@ export class DialogService {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result == dialogParameters.data) {
-        debugger
-        dialogParameters.afterClosedDelete();
+        dialogParameters.afterClosedDialog();
       }
     });
   }
@@ -28,7 +27,7 @@ export class DialogService {
 export class DialogParameters{
   compontentType: ComponentType<any>;
   data: any;
-  afterClosedDelete:()=>void;
+  afterClosedDialog:()=>void;
   options?: Partial<DialogOptions>;
 }
 export class DialogOptions{

@@ -48,7 +48,7 @@ export class SelectProductImageDialogComponent extends BaseDialog<SelectProductI
     this.dialogService.openDialog({
       compontentType: DeleteDialogComponent,
       data: DeleteState.Yes,
-      afterClosedDelete: async () =>{
+      afterClosedDialog: async () =>{
         this.spinner.show(SpinnerType.BallAtom)
         await this.productService.deleteImage(this.data as string, imageId, ()=>{
           this.spinner.hide(SpinnerType.BallAtom);
