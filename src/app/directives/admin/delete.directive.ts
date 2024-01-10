@@ -46,7 +46,7 @@ export class DeleteDirective {
             this.id
           ).pipe(
             catchError((errResponse:HttpErrorResponse)=>{
-              this.alertify.message('ürün silinirken bir hata oldu.', {
+              this.alertify.message(`${this.controller} silinirken bir hata oldu.`, {
                 messageType: MessageType.Error,
                 position: MessagePosition.TopRight,
               });
@@ -56,7 +56,7 @@ export class DeleteDirective {
           .subscribe((data) => {
             $(td.parentElement).fadeOut(800, () => {
               this.cb.emit();
-              this.alertify.message("ürün başariyla silinmiştir.",
+              this.alertify.message(`${this.controller} başariyla silinmiştir.`,
               {messageType: MessageType.Success, position:MessagePosition.TopRight})
             });
           });
