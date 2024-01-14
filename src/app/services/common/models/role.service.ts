@@ -10,7 +10,7 @@ export class RoleService {
   constructor(private httpClientService: HttpClientService) { }
 
   async getRoles(page:number=0, size:number=5, successCallBack?:()=>void, errorCallBack?:(errorMessage:string)=>void){
-    const observable: Observable<{totalRoleCount:number, roles:Map<string, string>}> = this.httpClientService.get({
+    const observable: Observable<any> = this.httpClientService.get({
       controller:"roles",
       queryString:`Pagination.page=${page}&Pagination.size=${size}`
     });

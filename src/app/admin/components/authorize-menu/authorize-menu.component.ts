@@ -31,21 +31,21 @@ export class AuthorizeMenuComponent extends BaseComponent implements OnInit {
           actions: menu.actions.map(action => ({
             name: action.definition,
             code: action.code,
+            menuName: menu.name
           })),
         };
         return treeMenu;
       });
   }
 
-  assignRole(code: string, name:string){
+  assignRole(code: string, name:string, menuName:string){
     this.dialogService.openDialog({
       compontentType: AuthorizeMenuDialogComponent,
-      data: {code, name},
+      data: {code, name, menuName},
       options:{
-        width:"70em"
+        width:"50em"
       },
       afterClosedDialog:()=>{
-
       }
     })
   }
@@ -55,7 +55,8 @@ export class AuthorizeMenuComponent extends BaseComponent implements OnInit {
       expandable: !!treeMenu.actions && treeMenu.actions.length > 0, // eğer actions array'i varsa ve boş değilse, expandable true olur
       name: treeMenu.name,
       level: level,
-      code: treeMenu.code
+      code: treeMenu.code,
+      menuName: treeMenu.menuName
     };
   };
 
@@ -86,6 +87,7 @@ interface ExampleFlatNode {
 interface ITreeMenu{
   name?:string;
   actions?: ITreeMenu[]
-  code?:string
+  code?:string;
+  menuName?:string;
 }
 
