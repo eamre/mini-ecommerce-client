@@ -8,6 +8,7 @@ import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../../ui
 import { TokenResponse } from 'src/app/contracts/token/tokenResponse';
 import { SocialUser } from '@abacritt/angularx-social-login';
 import { error } from 'console';
+import { ListUser } from 'src/app/contracts/users/list_user';
 
 @Injectable({
   providedIn: 'root'
@@ -37,22 +38,41 @@ export class UserService {
     await promiseData
   }
 
+  async getAllUsers(page:number=0, size:number=5, successCallBack?:()=>void,
+  errorCallBack?:(errorMessage:string)=>void):Promise<{totalUsersCount:number,users:ListUser[]}>{
+    const observable:Observable<{totalUsersCount:number,users:ListUser[]}> = this.httpClientService.get({
+      controller:"users",
+      queryString:`Pagination.page=${page}&Pagination.size=${size}`
+    })
+    const promiseData = firstValueFrom(observable);
+    promiseData.then(value => successCallBack())
+    .catch(error => errorCallBack(error))
+    return await promiseData
+  }
 
+  async assignRoleToUser(id: string, roles: string[], successCB?:()=> void, errorCB?:(error)=> void){
+    const observable:Observable<any> = this.httpClientService.post({
+      controller:"users",
+      action:"AssignRoleToUser"
+    }, {userId:id, roles});
 
-  // async facebookLogin(user: SocialUser, cb?:()=> void):Promise<any>{
-  //   const facebookLoginObservable:Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse>({
-  //     controller:"users",
-  //     action:"facebooklogin"
-  //   },user);
+    const promiseData = firstValueFrom(observable);
+    promiseData.then(()=>successCB()).catch(error => errorCB(error))
 
-  //   const tokenReponse: TokenResponse = await firstValueFrom(facebookLoginObservable) as TokenResponse
-  //   if(tokenReponse){
-  //     localStorage.setItem("accessToken",tokenReponse.token.accessToken);
-  //     this.toastrService.message("Facebook Üzerinden Giriş Başarıyla Sağlandı", "Giriş Başarılı",{
-  //       messageType:ToastrMessageType.Success,
-  //       position:ToastrPosition.TopRight
-  //     });
-  //   }
-  //   cb();
-  // }
+    await promiseData;
+  }
+
+  async getRolesOfUser(userId: string, successCB?:()=> void, errorCB?:(error)=> void):Promise<string[]>{
+    const observable:Observable<{userRoles:string[]}> = this.httpClientService.get({
+      controller:"users",
+      action:"GetRolesToUser"
+    },userId);
+
+    const promiseData = firstValueFrom(observable);
+    promiseData.then(successCB)
+      .catch(errorCB)
+
+    return (await promiseData).userRoles;
+  }
+
 }

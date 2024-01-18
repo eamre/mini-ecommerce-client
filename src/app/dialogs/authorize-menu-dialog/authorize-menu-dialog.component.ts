@@ -7,6 +7,7 @@ import { MatSelectionList } from '@angular/material/list';
 import { AuthorizationEndpoitService } from 'src/app/services/common/models/authorization-endpoit.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from 'src/app/base/base.component';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-authorize-menu-dialog',
@@ -31,7 +32,6 @@ export class AuthorizeMenuDialogComponent extends BaseDialog<AuthorizeMenuDialog
   datas: {roles: Map<string, string>, totalRoleCount: number};
   rol:ListRole[] = []
   assignedRoles:string[] = []
-  listRoles:{role:string, selected: boolean}[]
 
   async ngOnInit(): Promise<void> {
     this.datas = await this.roleService.getRoles(-1, -1)
@@ -41,15 +41,16 @@ export class AuthorizeMenuDialogComponent extends BaseDialog<AuthorizeMenuDialog
     }
 
     this.assignedRoles = await this.authorizationEndpoitService.getRolesOfEndpoint(this.data.code, this.data.menuName)
-    this.listRoles = this.rol.map((r:any) => {
-      return { role: r.name, selected: (this.assignedRoles?.indexOf(r.name)>-1) };
-    });
   }
 
   assignRoles(rolesComponent: MatSelectionList){
     const roles: string[] = rolesComponent.selectedOptions.selected.map(o => o._text.nativeElement.innerText);
     this.spinner.show(SpinnerType.BallAtom)
     this.authorizationEndpoitService.assignRoleEndpoint(roles, this.data.code, this.data.menuName,()=>{this.spinner.hide(SpinnerType.BallAtom)},error=>{})
+  }
+
+  isExistRole(name: string): boolean {
+    return this.assignedRoles.some(r => r === name);
   }
 
 }
