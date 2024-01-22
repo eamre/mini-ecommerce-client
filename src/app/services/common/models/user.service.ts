@@ -67,7 +67,6 @@ export class UserService {
       controller:"users",
       action:"GetRolesToUser"
     },userId);
-
     const promiseData = firstValueFrom(observable);
     promiseData.then(successCB)
       .catch(errorCB)

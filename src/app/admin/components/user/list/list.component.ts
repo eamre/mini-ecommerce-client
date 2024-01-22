@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -56,10 +56,10 @@ export class ListComponent extends BaseComponent implements OnInit {
     await this.getUsers();
   }
 
-  assignRole(id:string){
+  assignRole(id:string, userName:string){
     this.dialogService.openDialog({
       compontentType: AuthorizeUserDialogComponent,
-      data:id,
+      data:{id,userName},
       options:{
         width:"50em"
       },

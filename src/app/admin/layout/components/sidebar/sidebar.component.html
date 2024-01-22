@@ -1,13 +1,12 @@
+<!-- Menu component template -->
 <mat-list role="list">
-  <a mat-list-item role="listitem" routerLink="/admin">Dashboard</a>
-  <a mat-list-item role="listitem" routerLink="customers">Customers</a>
-  <a mat-list-item role="listitem" routerLink="products">Products</a>
-  <a mat-list-item role="listitem" routerLink="orders">Orders</a>
-  <a mat-list-item role="listitem" routerLink="authorize-menu">Authorize Menu</a>
-  <a mat-list-item role="listitem" routerLink="roles">Roles</a>
-  <a mat-list-item role="listitem" routerLink="users">Users</a>
-  <a mat-list-item role="listitem" routerLink="">Ana Sayfa</a>
+  <!-- Loop through the menu items and create a link for each one -->
+  <ng-container *ngFor="let item of menuItems">
+    <!-- Check if the current user has the role required for the menu item -->
+    <a *ngIf="roleCheck(item.role)" mat-list-item role="listitem" [routerLink]="item.link">{{ item.label }}</a>
+  </ng-container>
 </mat-list>
+
 
 
 <!-- <ul>
@@ -17,4 +16,3 @@
   <li><a routerLink ="orders">Orders</a></li>
   <li><a routerLink ="">Ana Sayfa</a></li>
 </ul> -->
-

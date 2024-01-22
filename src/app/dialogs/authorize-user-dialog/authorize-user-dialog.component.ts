@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectionList } from '@angular/material/list';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -42,13 +42,13 @@ export class AuthorizeUserDialogComponent extends BaseDialog<AuthorizeUserDialog
       this.rol.push({id: roleId, name: roleName})
     }
 
-    this.assignedRoles = await this.userService.getRolesOfUser(this.data, ()=>{this.spinner.hide(SpinnerType.BallScaleMultiple)})
+    this.assignedRoles = await this.userService.getRolesOfUser(this.data.id, ()=>{this.spinner.hide(SpinnerType.BallScaleMultiple)})
   }
 
   assignRoles(rolesComponent: MatSelectionList){
     const roles: string[] = rolesComponent.selectedOptions.selected.map(o => o._text.nativeElement.innerText);
     this.spinner.show(SpinnerType.BallAtom)
-    this.userService.assignRoleToUser(this.data, roles ,()=>{this.spinner.hide(SpinnerType.BallAtom)},error=>{})
+    this.userService.assignRoleToUser(this.data.id, roles ,()=>{this.spinner.hide(SpinnerType.BallAtom)},error=>{})
   }
 
   isExistRole(name: string): boolean {

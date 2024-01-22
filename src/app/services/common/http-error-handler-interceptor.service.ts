@@ -30,7 +30,8 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
               else
                 this.toastrService.message("Bu işlemi yapmaya yetkiniz yok", "Yetkisiz İşlem",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
             }
-          }).then(data => {});
+          }).then(data => {this.toastrService.message("Bu işlemi yapmaya yetkiniz yok", "Yetkisiz İşlem",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
+        });
           break;
         case HttpStatusCode.InternalServerError:
           this.toastrService.message("Sunucuya Erişilemiyor", "Sunucu Hatası",{messageType:ToastrMessageType.Warning, position:ToastrPosition.TopRight})
