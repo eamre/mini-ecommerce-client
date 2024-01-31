@@ -11,6 +11,7 @@ import { DialogService } from 'src/app/services/common/dialog.service';
 import { BasketService } from 'src/app/services/common/models/basket.service';
 import { OrderService } from 'src/app/services/common/models/order.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/ui/custom-toastr.service';
+import { log } from 'util';
 
 declare var $: any
 @Component({
@@ -34,6 +35,7 @@ export class BasketsComponent extends BaseComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.showSpinner(SpinnerType.BallAtom)
     this.basketItems = await this.basketService.get();
+
     this.hideSpinner(SpinnerType.BallAtom)
   }
 
@@ -48,6 +50,14 @@ export class BasketsComponent extends BaseComponent implements OnInit {
 
     await this.basketService.updateQuantity(basketItem);
     this.hideSpinner(SpinnerType.BallAtom)
+  }
+
+  async saveSelected(isSelected:boolean, basketItemId:string){
+    let basketItem: UpdateBasketItem = new UpdateBasketItem()
+    basketItem.basketItemId = basketItemId
+    basketItem.isSelected = isSelected;
+
+    await this.basketService.updateBasketItemSelected(basketItem);
   }
 
   async removeBasketItem(basketItemId:string){

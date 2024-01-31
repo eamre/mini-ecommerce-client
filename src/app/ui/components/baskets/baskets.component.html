@@ -8,6 +8,7 @@
       <thead>
         <tr>
           <th scope="col">#</th>
+          <th scope="col">Seçim</th>
           <th scope="col">Ürün</th>
           <th scope="col">Fiyat</th>
           <th scope="col">Adet</th>
@@ -16,6 +17,7 @@
       <tbody>
         <tr class="{{basketItem.basketItemId}}" *ngFor="let basketItem of basketItems; let i = index">
           <th scope="row">{{i+1}}</th>
+          <td><input type="checkbox" [(ngModel)]="basketItem.isSelected" (change)="saveSelected(basketItem.isSelected, basketItem.basketItemId)"/></td>
           <td>{{basketItem.name}}</td>
           <td>{{basketItem.price}}</td>
           <td><input type="number" [value]="basketItem.quantity" style="width: 3.5em;" id="{{basketItem.basketItemId}}"

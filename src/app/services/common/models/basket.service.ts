@@ -34,6 +34,15 @@ export class BasketService {
     await firstValueFrom(observable);
   }
 
+  async updateBasketItemSelected(basketItem:UpdateBasketItem):Promise<void>{
+    const observable : Observable<any>=this.httpClientService.put({
+      controller:"baskets",
+      action:"UpdateSelected"
+    },basketItem)
+
+    await firstValueFrom(observable);
+  }
+
   async remove(basketItemId: string){
     const observable: Observable<any>=this.httpClientService.delete({
       controller:"baskets"

@@ -1,6 +1,7 @@
 export class ListBasketItem {
-  basketItemId:string;
-  name:string;
-  price:number;
-  quantity:number;
+  basketItemId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  isSelected: boolean;
 }
